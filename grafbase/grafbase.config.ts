@@ -39,12 +39,12 @@ export default config({
   //     }
   //   ]
   // }
-})
- */
+}) */
 
-import { graph, config, auth } from '@grafbase/sdk';
+import { config, connector, graph, auth } from '@grafbase/sdk'
 import { Graph } from '@grafbase/sdk/dist/src/grafbase-schema';
 const g = graph.Standalone()
+
 // @ts-ignore
 const User = Graph.model('User', {
   name: g.string().length({ min: 2, max: 100 }),
@@ -52,7 +52,7 @@ const User = Graph.model('User', {
   avatarUrl: g.url(),
   description: g.string().length({ min: 2, max: 1000 }).optional(),
   githubUrl: g.url().optional(),
-  linkedinUrl: g.url().optional(),
+  linkedInUrl: g.url().optional(),
   projects: g.relation(() => Project).list().optional(),
 }).auth((rules: { public: () => { (): any; new(): any; read: { (): void; new(): any; }; }; }) => {
   rules.public().read()
@@ -78,7 +78,7 @@ const jwt = auth.JWT({
 })
 
 export default config({
-  schema: g,
+  graph: g,
   auth: {
     providers: [jwt],
     rules: (rules) => rules.private()
